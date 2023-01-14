@@ -7,13 +7,13 @@ import java.util.Optional;
 
 public interface WarehouseService {
 
-    void createWarehouse(Warehouse warehouse);
+    Warehouse createWarehouse(Warehouse warehouse);
 
     List<Warehouse> getAllWarehouse();
 
     Optional<Warehouse> getWarehouseById(Long id);
 
-    int updateWarehouseById(Long id, Warehouse newWarehouse);
+    Warehouse updateWarehouseById(Long id, Warehouse newWarehouse);
 
     void deleteWarehouseById(Long id);
 

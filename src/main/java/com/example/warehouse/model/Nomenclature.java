@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 @Entity
 public class Nomenclature {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
