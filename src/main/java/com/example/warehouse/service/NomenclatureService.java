@@ -7,13 +7,13 @@ import java.util.Optional;
 
 public interface NomenclatureService {
 
-    void createNomenclature(Nomenclature nomenclature);
+    Nomenclature createNomenclature(Nomenclature nomenclature);
 
     List<Nomenclature> getAllNomenclature();
 
     Optional<Nomenclature> getNomenclatureById(Long id);
 
-    int updateNomenclatureById(Long id, Nomenclature newNomenclature);
+    Nomenclature updateNomenclatureById(Long id, Nomenclature newNomenclature);
 
     void deleteNomenclatureById(Long id);
 

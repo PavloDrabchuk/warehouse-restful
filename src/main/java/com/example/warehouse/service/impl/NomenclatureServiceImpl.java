@@ -20,8 +20,8 @@ public class NomenclatureServiceImpl implements NomenclatureService {
     }
 
     @Override
-    public void createNomenclature(Nomenclature nomenclature) {
-        nomenclatureRepository.save(nomenclature);
+    public Nomenclature createNomenclature(Nomenclature nomenclature) {
+        return nomenclatureRepository.save(nomenclature);
     }
 
     @Override
@@ -35,17 +35,16 @@ public class NomenclatureServiceImpl implements NomenclatureService {
     }
 
     @Override
-    public int updateNomenclatureById(Long id, Nomenclature newNomenclature) {
+    public Nomenclature updateNomenclatureById(Long id, Nomenclature newNomenclature) {
         Optional<Nomenclature> nomenclature = nomenclatureRepository.findById(id);
 
         if (nomenclature.isPresent()) {
             nomenclature.get().setName(newNomenclature.getName());
 
-            nomenclatureRepository.save(nomenclature.get());
-            return 1;
+            return nomenclatureRepository.save(nomenclature.get());
         }
 
-        return 0;
+        return nomenclatureRepository.save(newNomenclature);
     }
 
     @Override

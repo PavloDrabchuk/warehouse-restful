@@ -1,8 +1,11 @@
-package com.example.warehouse.api;
+package com.example.warehouse.controller;
 
 import com.example.warehouse.model.Warehouse;
 import com.example.warehouse.service.WarehouseService;
+import com.example.warehouse.service.impl.WarehouseServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +17,7 @@ public class WarehouseController {
 
     final private WarehouseService warehouseService;
 
+    @Autowired
     public WarehouseController(WarehouseService warehouseService) {
         this.warehouseService = warehouseService;
     }
