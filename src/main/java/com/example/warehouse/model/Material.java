@@ -16,9 +16,11 @@ public class Material {
     @Column(nullable = false, unique = true, length = 40)
     private String name;
 
+    @Column(nullable = false)
+    private Integer amount;
 
     @Column(nullable = false)
-    private Boolean status = false;
+    private Boolean status = true;
 
     @OneToOne(optional = false)
     @JoinColumn(nullable = false, unique = true)
@@ -29,6 +31,10 @@ public class Material {
 
     @ManyToOne
     private Warehouse warehouse;
+
+    public Integer getAmount() {
+        return amount;
+    }
 
 
     public Material() {
@@ -63,6 +69,10 @@ public class Material {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 
     public Boolean getStatus() {

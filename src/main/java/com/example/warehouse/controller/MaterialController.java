@@ -1,5 +1,6 @@
 package com.example.warehouse.controller;
 
+import com.example.warehouse.dto.MaterialCreateDTO;
 import com.example.warehouse.dto.MaterialDTO;
 import com.example.warehouse.model.Material;
 import com.example.warehouse.model.Warehouse;
@@ -38,5 +39,12 @@ public class MaterialController {
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+    }
+
+    @PostMapping(path = "{id}/material")
+    public ResponseEntity<MaterialDTO> createMaterial(@RequestBody MaterialCreateDTO materialCreateDTO) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(materialService.createMaterial(materialCreateDTO));
     }
 }

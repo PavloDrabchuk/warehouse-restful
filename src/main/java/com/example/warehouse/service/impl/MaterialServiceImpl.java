@@ -1,5 +1,6 @@
 package com.example.warehouse.service.impl;
 
+import com.example.warehouse.dto.MaterialCreateDTO;
 import com.example.warehouse.dto.MaterialDTO;
 import com.example.warehouse.mapper.MaterialMapper;
 import com.example.warehouse.model.Material;
@@ -27,8 +28,9 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public Material createMaterial(Material material) {
-        return materialRepository.save(material);
+    public MaterialDTO createMaterial(MaterialCreateDTO materialCreateDTO) {
+        Material material = materialRepository.save(materialMapper.toMaterial(materialCreateDTO));
+        return materialMapper.toMaterialDTO(material);
     }
 
     @Override

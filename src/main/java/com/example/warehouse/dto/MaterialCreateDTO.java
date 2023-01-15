@@ -2,22 +2,12 @@ package com.example.warehouse.dto;
 
 import java.util.UUID;
 
-public class MaterialDTO {
+public class MaterialCreateDTO {
 
-    UUID id;
     String name;
     Integer amount;
-    Boolean status;
     Long nomenclatureId;
     Long unitId;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -33,14 +23,6 @@ public class MaterialDTO {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
     }
 
     public Long getNomenclatureId() {

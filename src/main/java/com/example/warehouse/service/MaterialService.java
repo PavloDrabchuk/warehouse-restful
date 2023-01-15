@@ -1,5 +1,6 @@
 package com.example.warehouse.service;
 
+import com.example.warehouse.dto.MaterialCreateDTO;
 import com.example.warehouse.dto.MaterialDTO;
 import com.example.warehouse.model.Material;
 import com.example.warehouse.model.Warehouse;
@@ -10,7 +11,7 @@ import java.util.UUID;
 
 public interface MaterialService {
 
-    Material createMaterial(Material material);
+    MaterialDTO createMaterial(MaterialCreateDTO materialCreateDTO);
 
     List<Material> getAllMaterials();
 
