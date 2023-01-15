@@ -1,6 +1,6 @@
 package com.example.warehouse.model;
 
-import com.example.warehouse.enums.Unit;
+
 import jakarta.persistence.*;
 
 import java.util.UUID;
@@ -22,8 +22,7 @@ public class Material {
     @JoinColumn(nullable = false, unique = true)
     private Nomenclature nomenclature;
 
-    @Enumerated
-    @Column(nullable = false)
+    @ManyToOne
     private Unit unit;
 
     public Material() {

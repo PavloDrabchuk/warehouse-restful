@@ -9,7 +9,7 @@ public interface WarehouseService {
 
     Warehouse createWarehouse(Warehouse warehouse);
 
-    List<Warehouse> getAllWarehouse();
+    List<Warehouse> getAllWarehouses();
 
     Optional<Warehouse> getWarehouseById(Long id);
 

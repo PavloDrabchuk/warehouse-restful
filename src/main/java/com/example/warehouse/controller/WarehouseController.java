@@ -2,10 +2,8 @@ package com.example.warehouse.controller;
 
 import com.example.warehouse.model.Warehouse;
 import com.example.warehouse.service.WarehouseService;
-import com.example.warehouse.service.impl.WarehouseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +22,7 @@ public class WarehouseController {
 
     @GetMapping
     public List<Warehouse> getAllWarehouses() {
-        return warehouseService.getAllWarehouse();
+        return warehouseService.getAllWarehouses();
     }
 
     @GetMapping(path = "{id}")

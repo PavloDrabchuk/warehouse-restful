@@ -19,14 +19,13 @@ public class WarehouseServiceImpl implements WarehouseService {
         this.warehouseRepository = warehouseRepository;
     }
 
-
     @Override
     public Warehouse createWarehouse(Warehouse warehouse) {
         return warehouseRepository.save(warehouse);
     }
 
     @Override
-    public List<Warehouse> getAllWarehouse() {
+    public List<Warehouse> getAllWarehouses() {
         return (List<Warehouse>) warehouseRepository.findAll();
     }
 

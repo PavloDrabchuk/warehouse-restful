@@ -1,9 +1,9 @@
 package com.example.warehouse.repository;
 
-import com.example.warehouse.model.Nomenclature;
+import com.example.warehouse.model.Unit;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface NomenclatureRepository extends CrudRepository<Nomenclature, Long> {
+public interface UnitRepository extends CrudRepository<Unit, Long> {
 }
