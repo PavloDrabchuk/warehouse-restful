@@ -3,6 +3,7 @@ package com.example.warehouse.service.impl;
 import com.example.warehouse.model.Unit;
 import com.example.warehouse.repository.UnitRepository;
 import com.example.warehouse.service.UnitService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,7 @@ public class UnitServiceImpl implements UnitService {
 
     final private UnitRepository unitRepository;
 
+    @Autowired
     public UnitServiceImpl(UnitRepository unitRepository) {
         this.unitRepository = unitRepository;
     }

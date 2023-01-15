@@ -17,7 +17,6 @@ public class Warehouse {
     @OneToMany
     private List<Material> materials;
 
-
     public Warehouse() {
     }
 
@@ -40,5 +39,13 @@ public class Warehouse {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Material> getMaterials() {
+        return materials;
+    }
+
+    public void setMaterials(List<Material> materials) {
+        this.materials = materials;
     }
 }

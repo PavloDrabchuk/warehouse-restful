@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "api/v1/warehouse/nomenclature")
+@RequestMapping(path = "api/v1/warehouses/nomenclature")
 public class NomenclatureController {
 
     final private NomenclatureService nomenclatureService;

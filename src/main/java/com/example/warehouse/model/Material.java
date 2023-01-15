@@ -2,6 +2,7 @@ package com.example.warehouse.model;
 
 
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 
 import java.util.UUID;
 
@@ -15,6 +16,7 @@ public class Material {
     @Column(nullable = false, unique = true, length = 40)
     private String name;
 
+
     @Column(nullable = false)
     private Boolean status = false;
 
@@ -25,6 +27,10 @@ public class Material {
     @ManyToOne
     private Unit unit;
 
+    @ManyToOne
+    private Warehouse warehouse;
+
+
     public Material() {
     }
 
@@ -33,6 +39,14 @@ public class Material {
         this.status = status;
         this.nomenclature = nomenclature;
         this.unit = unit;
+    }
+
+    public Material(String name, Boolean status, Nomenclature nomenclature, Unit unit, Warehouse warehouse) {
+        this.name = name;
+        this.status = status;
+        this.nomenclature = nomenclature;
+        this.unit = unit;
+        this.warehouse = warehouse;
     }
 
     public UUID getId() {
@@ -73,5 +87,13 @@ public class Material {
 
     public void setUnit(Unit unit) {
         this.unit = unit;
+    }
+
+    public Warehouse getWarehouse() {
+        return warehouse;
+    }
+
+    public void setWarehouse(Warehouse warehouse) {
+        this.warehouse = warehouse;
     }
 }

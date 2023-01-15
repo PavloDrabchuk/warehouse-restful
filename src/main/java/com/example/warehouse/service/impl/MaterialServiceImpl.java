@@ -1,6 +1,9 @@
 package com.example.warehouse.service.impl;
 
+import com.example.warehouse.dto.MaterialDTO;
+import com.example.warehouse.mapper.MaterialMapper;
 import com.example.warehouse.model.Material;
+import com.example.warehouse.model.Warehouse;
 import com.example.warehouse.repository.MaterialRepository;
 import com.example.warehouse.service.MaterialService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,25 +12,35 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class MaterialServiceImpl implements MaterialService {
 
     private final MaterialRepository materialRepository;
+    private final MaterialMapper materialMapper;
 
     @Autowired
-    public MaterialServiceImpl(MaterialRepository materialRepository) {
+    public MaterialServiceImpl(MaterialRepository materialRepository, MaterialMapper materialMapper) {
         this.materialRepository = materialRepository;
+        this.materialMapper = materialMapper;
     }
 
     @Override
-    public void createMaterial(Material material) {
-        materialRepository.save(material);
+    public Material createMaterial(Material material) {
+        return materialRepository.save(material);
     }
 
     @Override
     public List<Material> getAllMaterials() {
         return (List<Material>) materialRepository.findAll();
+    }
+
+    @Override
+    public List<MaterialDTO> getAllMaterialsByWarehouse(Warehouse warehouse) {
+        return materialRepository.findAllByWarehouse(warehouse).stream()
+                .map(materialMapper::toMaterialDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
