@@ -26,7 +26,7 @@ public class MaterialController {
         this.warehouseService = warehouseService;
     }
 
-    @GetMapping(path = "{id}/material")
+    @GetMapping(path = "{id}/materials")
     public ResponseEntity<List<MaterialDTO>> getAllMaterialsByWarehouseId(@PathVariable("id") Long id) {
         WarehouseDTO warehouseDTO = warehouseService.getWarehouseById(id);
 
@@ -40,9 +40,9 @@ public class MaterialController {
     }
 
 
-    @GetMapping(path = "{warehouseId}/materials")
+    @GetMapping(path = "{warehouseId}/material")
     public ResponseEntity<MaterialDTO> getMaterialByIdAndWarehouse(@PathVariable("warehouseId") Long warehouseId,
-                                                                   @RequestParam(value = "id", required = true) String materialId) {
+                                                                   @RequestParam(name = "id") String materialId) {
         WarehouseDTO warehouse = warehouseService.getWarehouseById(warehouseId);
 
         if (warehouse == null) {
