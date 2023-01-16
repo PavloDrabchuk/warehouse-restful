@@ -20,6 +20,7 @@ public interface MaterialMapper {
     @Mapping(target = "warehouse", ignore = true)
     @Mapping(target = "unit.id", source = "unitId")
     @Mapping(target = "nomenclature.id", source = "nomenclatureId")
+    @Mapping(target = "warehouse.id",source = "warehouseId")
     Material toMaterial(MaterialCreateDTO materialCreateDTO);
 
     void updateMaterialFromDto(MaterialDTO materialDTO, @MappingTarget Material material);

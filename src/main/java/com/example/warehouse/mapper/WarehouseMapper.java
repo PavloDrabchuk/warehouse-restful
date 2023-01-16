@@ -9,6 +9,8 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface WarehouseMapper {
 
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "name", source = "name")
     WarehouseDTO toWarehouseDTO(Warehouse warehouse);
 
     @Mapping(target = "id", ignore = true)

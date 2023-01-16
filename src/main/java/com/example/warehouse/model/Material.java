@@ -25,9 +25,11 @@ public class Material {
     private Nomenclature nomenclature;
 
     @ManyToOne
+    @JoinColumn
     private Unit unit;
 
     @ManyToOne
+    @JoinColumn
     private Warehouse warehouse;
 
     public Integer getAmount() {

@@ -9,6 +9,8 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface UnitMapper {
 
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "name", source = "name")
     UnitDTO toUnitDTO(Unit unit);
 
     @Mapping(target = "id", ignore = true)

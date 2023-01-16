@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface MaterialService {
 
-    MaterialDTO createMaterial(MaterialCreateDTO materialCreateDTO, WarehouseDTO warehouseDTO);
+    MaterialDTO createMaterial(MaterialCreateDTO materialCreateDTO);
 
     List<MaterialDTO> getAllMaterials();
 

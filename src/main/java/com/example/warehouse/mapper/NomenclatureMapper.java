@@ -9,6 +9,8 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface NomenclatureMapper {
 
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "name", source = "name")
     NomenclatureDTO toNomenclatureDTO(Nomenclature nomenclature);
 
     @Mapping(target = "id", ignore = true)

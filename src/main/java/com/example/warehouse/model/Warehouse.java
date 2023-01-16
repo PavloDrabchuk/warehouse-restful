@@ -14,8 +14,8 @@ public class Warehouse {
     @Column(nullable = false, unique = true, length = 60)
     private String name;
 
-    @OneToMany
-    private List<Material> materials;
+    @OneToMany(cascade = {CascadeType.ALL})
+    private List<Material> materials = new java.util.ArrayList<>();
 
     public Warehouse() {
     }

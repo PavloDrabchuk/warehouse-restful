@@ -63,9 +63,10 @@ public class MaterialController {
         WarehouseDTO warehouse = warehouseService.getWarehouseById(warehouseId);
 
         if (warehouse != null) {
+            materialCreateDTO.setWarehouseId(warehouseId);
             return ResponseEntity
                     .status(HttpStatus.CREATED)
-                    .body(materialService.createMaterial(materialCreateDTO, warehouse));
+                    .body(materialService.createMaterial(materialCreateDTO));
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
