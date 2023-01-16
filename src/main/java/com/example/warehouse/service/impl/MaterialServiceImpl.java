@@ -28,9 +28,11 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public MaterialDTO createMaterial(MaterialCreateDTO materialCreateDTO) {
-        Material material = materialRepository.save(materialMapper.toMaterial(materialCreateDTO));
-        return materialMapper.toMaterialDTO(material);
+    public MaterialDTO createMaterial(MaterialCreateDTO materialCreateDTO, Warehouse warehouse) {
+        Material material = materialMapper.toMaterial(materialCreateDTO);
+        material.setWarehouse(warehouse);
+
+        return materialMapper.toMaterialDTO(materialRepository.save(material));
     }
 
     @Override

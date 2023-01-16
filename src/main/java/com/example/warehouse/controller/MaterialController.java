@@ -42,9 +42,17 @@ public class MaterialController {
     }
 
     @PostMapping(path = "{id}/material")
-    public ResponseEntity<MaterialDTO> createMaterial(@RequestBody MaterialCreateDTO materialCreateDTO) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(materialService.createMaterial(materialCreateDTO));
+    public ResponseEntity<MaterialDTO> createMaterial(@PathVariable("id") Long id,
+                                                      @RequestBody MaterialCreateDTO materialCreateDTO) {
+        Optional<Warehouse> warehouse = warehouseService.getWarehouseById(id);
+
+        if (warehouse.isPresent()) {
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(materialService.createMaterial(materialCreateDTO, warehouse.get()));
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
     }
 }
