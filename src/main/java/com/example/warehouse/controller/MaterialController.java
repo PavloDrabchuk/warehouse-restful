@@ -1,19 +1,17 @@
 package com.example.warehouse.controller;
 
-import com.example.warehouse.dto.MaterialCreateDTO;
-import com.example.warehouse.dto.MaterialDTO;
-import com.example.warehouse.model.Material;
-import com.example.warehouse.model.Warehouse;
+import com.example.warehouse.dto.material.MaterialCreateDTO;
+import com.example.warehouse.dto.material.MaterialDTO;
+import com.example.warehouse.dto.warehouse.WarehouseDTO;
 import com.example.warehouse.service.MaterialService;
 import com.example.warehouse.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "api/v1/warehouses")
@@ -30,29 +28,80 @@ public class MaterialController {
 
     @GetMapping(path = "{id}/material")
     public ResponseEntity<List<MaterialDTO>> getAllMaterialsByWarehouseId(@PathVariable("id") Long id) {
-        Optional<Warehouse> warehouse = warehouseService.getWarehouseById(id);
+        WarehouseDTO warehouseDTO = warehouseService.getWarehouseById(id);
 
-        if (warehouse.isPresent()) {
+        if (warehouseDTO == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(materialService.getAllMaterialsByWarehouseId(warehouseDTO.getId()));
+    }
+
+
+    @GetMapping(path = "{warehouseId}/materials")
+    public ResponseEntity<MaterialDTO> getMaterialByIdAndWarehouse(@PathVariable("warehouseId") Long warehouseId,
+                                                                   @RequestParam(value = "id", required = true) String materialId) {
+        WarehouseDTO warehouse = warehouseService.getWarehouseById(warehouseId);
+
+        if (warehouse == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        MaterialDTO materialDTO = materialService.getMaterialByWarehouseIdAndId(warehouse.getId(), UUID.fromString(materialId));
+
+        return ResponseEntity
+                .status((materialDTO != null) ? HttpStatus.OK : HttpStatus.NOT_FOUND)
+                .body(materialDTO);
+    }
+
+
+    @PostMapping(path = "{id}/material")
+    public ResponseEntity<MaterialDTO> createMaterial(@PathVariable("id") Long warehouseId,
+                                                      @RequestBody MaterialCreateDTO materialCreateDTO) {
+        WarehouseDTO warehouse = warehouseService.getWarehouseById(warehouseId);
+
+        if (warehouse != null) {
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(materialService.createMaterial(materialCreateDTO, warehouse));
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+    }
+
+    @PutMapping(path = "{id}/material")
+    public ResponseEntity<MaterialDTO> updateMaterial(@PathVariable("id") Long warehouseId,
+                                                      @RequestBody MaterialDTO materialDTO) {
+        WarehouseDTO warehouse = warehouseService.getWarehouseById(warehouseId);
+
+        if (warehouse != null) {
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(materialService.getAllMaterialsByWarehouse(warehouse.get()));
+                    .body(materialService.updateMaterialById(materialDTO, warehouse));
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
-    @PostMapping(path = "{id}/material")
-    public ResponseEntity<MaterialDTO> createMaterial(@PathVariable("id") Long id,
-                                                      @RequestBody MaterialCreateDTO materialCreateDTO) {
-        Optional<Warehouse> warehouse = warehouseService.getWarehouseById(id);
+    @DeleteMapping(path = "{warehouseId}/material")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Object> deleteMaterialByWarehouseAndId(@PathVariable("warehouseId") Long warehouseId,
+                                                                 @RequestParam("id") String materialId) {
 
-        if (warehouse.isPresent()) {
+        WarehouseDTO warehouse = warehouseService.getWarehouseById(warehouseId);
+
+        if (warehouse != null) {
+
             return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(materialService.createMaterial(materialCreateDTO, warehouse.get()));
+                    .status(materialService.deleteMaterialByWarehouseIdAndId(warehouse.getId(), UUID.fromString(materialId))
+                            ? HttpStatus.OK
+                            : HttpStatus.BAD_REQUEST)
+                    .build();
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-
     }
 }

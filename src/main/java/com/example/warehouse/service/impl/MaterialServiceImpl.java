@@ -1,12 +1,16 @@
 package com.example.warehouse.service.impl;
 
-import com.example.warehouse.dto.MaterialCreateDTO;
-import com.example.warehouse.dto.MaterialDTO;
+import com.example.warehouse.dto.material.MaterialCreateDTO;
+import com.example.warehouse.dto.material.MaterialDTO;
+import com.example.warehouse.dto.warehouse.WarehouseDTO;
 import com.example.warehouse.mapper.MaterialMapper;
+import com.example.warehouse.mapper.WarehouseMapper;
 import com.example.warehouse.model.Material;
+import com.example.warehouse.model.Nomenclature;
 import com.example.warehouse.model.Warehouse;
 import com.example.warehouse.repository.MaterialRepository;
 import com.example.warehouse.service.MaterialService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,62 +20,78 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class MaterialServiceImpl implements MaterialService {
 
     private final MaterialRepository materialRepository;
     private final MaterialMapper materialMapper;
+    private final WarehouseMapper warehouseMapper;
 
     @Autowired
-    public MaterialServiceImpl(MaterialRepository materialRepository, MaterialMapper materialMapper) {
+    public MaterialServiceImpl(MaterialRepository materialRepository, MaterialMapper materialMapper, WarehouseMapper warehouseMapper) {
         this.materialRepository = materialRepository;
         this.materialMapper = materialMapper;
+        this.warehouseMapper = warehouseMapper;
     }
 
     @Override
-    public MaterialDTO createMaterial(MaterialCreateDTO materialCreateDTO, Warehouse warehouse) {
+    public MaterialDTO createMaterial(MaterialCreateDTO materialCreateDTO, WarehouseDTO warehouseDTO) {
         Material material = materialMapper.toMaterial(materialCreateDTO);
-        material.setWarehouse(warehouse);
+        material.setWarehouse(warehouseMapper.toWarehouse(warehouseDTO));
 
         return materialMapper.toMaterialDTO(materialRepository.save(material));
     }
 
     @Override
-    public List<Material> getAllMaterials() {
-        return (List<Material>) materialRepository.findAll();
-    }
-
-    @Override
-    public List<MaterialDTO> getAllMaterialsByWarehouse(Warehouse warehouse) {
-        return materialRepository.findAllByWarehouse(warehouse).stream()
+    public List<MaterialDTO> getAllMaterials() {
+        return materialRepository.findAll().stream()
                 .map(materialMapper::toMaterialDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<Material> getMaterialById(UUID id) {
-        return materialRepository.findById(id);
+    public List<MaterialDTO> getAllMaterialsByWarehouseId(Long warehouseId) {
+        return materialRepository.findAllByWarehouseId(warehouseId).stream()
+                .map(materialMapper::toMaterialDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public int updateMaterialById(UUID id, Material newMaterial) {
-        Optional<Material> material = materialRepository.findById(id);
+    public MaterialDTO getMaterialById(UUID id) {
+        return materialMapper.toMaterialDTO(materialRepository.findById(id).orElse(null));
+    }
+
+    @Override
+    public MaterialDTO getMaterialByWarehouseIdAndId(Long warehouseId, UUID id) {
+        return materialMapper.toMaterialDTO(materialRepository.findMaterialByIdAndWarehouseId(id,warehouseId).orElse(null));
+    }
+
+
+    @Override
+    public MaterialDTO updateMaterialById(MaterialDTO newMaterialDTO, WarehouseDTO warehouseDTO) {
+        Optional<Material> material = materialRepository.findById(newMaterialDTO.getId());
 
         if (material.isPresent()) {
-            material.get().setName(newMaterial.getName());
-            material.get().setStatus(newMaterial.getStatus());
-            material.get().setNomenclature(newMaterial.getNomenclature());
-            material.get().setUnit(newMaterial.getUnit());
-
-            materialRepository.save(material.get());
-            return 1;
+            materialMapper.updateMaterialFromDto(newMaterialDTO, material.get());
+           return materialMapper.toMaterialDTO(materialRepository.save(material.get()));
         }
-
-        return 0;
+        return null;
     }
 
     @Override
     public void deleteMaterialById(UUID id) {
         materialRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean deleteMaterialByWarehouseIdAndId(Long warehouseId, UUID id) {
+        Optional<Material> material = materialRepository.findMaterialByIdAndWarehouseId(id,warehouseId);
+
+        if(material.isPresent()){
+            materialRepository.deleteMaterialByIdAndWarehouseId(id, warehouseId);
+            return true;
+        }
+        return false;
     }
 
     @Override

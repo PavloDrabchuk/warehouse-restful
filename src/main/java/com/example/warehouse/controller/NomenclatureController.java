@@ -1,13 +1,14 @@
 package com.example.warehouse.controller;
 
-import com.example.warehouse.model.Nomenclature;
+import com.example.warehouse.dto.nomenclature.NomenclatureDTO;
 import com.example.warehouse.service.NomenclatureService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/v1/warehouses/nomenclature")
@@ -21,28 +22,41 @@ public class NomenclatureController {
     }
 
     @GetMapping
-    public List<Nomenclature> getAllNomenclatures() {
-        return nomenclatureService.getAllNomenclature();
+    public List<NomenclatureDTO> getAllNomenclatures() {
+        return nomenclatureService.getAllNomenclatures();
     }
 
     @GetMapping(path = "{id}")
-    public Optional<Nomenclature> getNomenclatureById(@PathVariable("id") Long id) {
-        return nomenclatureService.getNomenclatureById(id);
+    public ResponseEntity<NomenclatureDTO> getNomenclatureById(@PathVariable("id") Long id) {
+        NomenclatureDTO nomenclatureDTO = nomenclatureService.getNomenclatureById(id);
+
+        return ResponseEntity
+                .status((nomenclatureDTO != null) ? HttpStatus.OK : HttpStatus.NOT_FOUND)
+                .body(nomenclatureDTO);
     }
 
     @PostMapping
-    public Nomenclature createNomenclature(@RequestBody Nomenclature nomenclature) {
-        return nomenclatureService.createNomenclature(nomenclature);
+    public ResponseEntity<NomenclatureDTO> createNomenclature(@Valid @RequestBody NomenclatureDTO nomenclatureDTO) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(nomenclatureService.createNomenclature(nomenclatureDTO));
     }
 
     @PutMapping
-    public Nomenclature updateNomenclature(@RequestBody Nomenclature nomenclature) {
-        return nomenclatureService.updateNomenclatureById(nomenclature.getId(), nomenclature);
+    public ResponseEntity<NomenclatureDTO> updateNomenclature(@Valid @RequestBody NomenclatureDTO newNomenclatureDTO) {
+        NomenclatureDTO nomenclatureDTO = nomenclatureService.updateNomenclatureById(newNomenclatureDTO.getId(), newNomenclatureDTO);
+
+        return ResponseEntity
+                .status((nomenclatureDTO != null) ? HttpStatus.OK : HttpStatus.NOT_FOUND)
+                .body(nomenclatureDTO);
     }
 
     @DeleteMapping(path = "{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteNomenclatureById(@PathVariable("id") Long id) {
-        nomenclatureService.deleteNomenclatureById(id);
+    public ResponseEntity<Object> deleteNomenclatureById(@PathVariable("id") Long id) {
+        return ResponseEntity
+                .status(nomenclatureService.deleteNomenclatureById(id)
+                        ? HttpStatus.OK
+                        : HttpStatus.BAD_REQUEST)
+                .build();
     }
 }

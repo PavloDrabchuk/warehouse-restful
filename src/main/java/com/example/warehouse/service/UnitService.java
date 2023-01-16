@@ -1,21 +1,20 @@
 package com.example.warehouse.service;
 
-import com.example.warehouse.model.Unit;
+import com.example.warehouse.dto.unit.UnitDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UnitService {
 
-    Unit createUnit(Unit unit);
+    UnitDTO createUnit(UnitDTO unitDTO);
 
-    List<Unit> getAllUnits();
+    List<UnitDTO> getAllUnits();
 
-    Optional<Unit> getUnitById(Long id);
+    UnitDTO getUnitById(Long id);
 
-    Unit updateUnitById(Long id, Unit newUnit);
+    UnitDTO updateUnitById(Long id, UnitDTO unitDTO);
 
-    void deleteUnitById(Long id);
+    boolean deleteUnitById(Long id);
 
     void deleteAllUnits();
 }

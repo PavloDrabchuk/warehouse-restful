@@ -1,13 +1,14 @@
 package com.example.warehouse.controller;
 
-import com.example.warehouse.model.Warehouse;
+import com.example.warehouse.dto.warehouse.WarehouseDTO;
 import com.example.warehouse.service.WarehouseService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/v1/warehouses")
@@ -21,28 +22,41 @@ public class WarehouseController {
     }
 
     @GetMapping
-    public List<Warehouse> getAllWarehouses() {
+    public List<WarehouseDTO> getAllWarehouses() {
         return warehouseService.getAllWarehouses();
     }
 
     @GetMapping(path = "{id}")
-    public Optional<Warehouse> getWarehouseById(@PathVariable("id") Long id) {
-        return warehouseService.getWarehouseById(id);
+    public ResponseEntity<WarehouseDTO> getWarehouseById(@PathVariable("id") Long id) {
+        WarehouseDTO warehouseDTO = warehouseService.getWarehouseById(id);
+
+        return ResponseEntity
+                .status((warehouseDTO != null) ? HttpStatus.OK : HttpStatus.NOT_FOUND)
+                .body(warehouseDTO);
     }
 
     @PostMapping
-    public Warehouse createWarehouse(@RequestBody Warehouse warehouse) {
-        return warehouseService.createWarehouse(warehouse);
+    public ResponseEntity<WarehouseDTO> createWarehouse(@Valid @RequestBody WarehouseDTO warehouseDTO) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(warehouseService.createWarehouse(warehouseDTO));
     }
 
     @PutMapping
-    public Warehouse updateWarehouse(@RequestBody Warehouse warehouse) {
-        return warehouseService.updateWarehouseById(warehouse.getId(), warehouse);
+    public ResponseEntity<WarehouseDTO> updateWarehouse(@Valid @RequestBody WarehouseDTO newWarehouseDTO) {
+        WarehouseDTO warehouseDTO = warehouseService.updateWarehouseById(newWarehouseDTO.getId(), newWarehouseDTO);
+
+        return ResponseEntity
+                .status((warehouseDTO != null) ? HttpStatus.OK : HttpStatus.NOT_FOUND)
+                .body(warehouseDTO);
     }
 
     @DeleteMapping(path = "{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteWarehouseById(@PathVariable("id") Long id) {
-        warehouseService.deleteWarehouseById(id);
+    public ResponseEntity<Object> deleteWarehouseById(@PathVariable("id") Long id) {
+        return ResponseEntity
+                .status(warehouseService.deleteWarehouseById(id)
+                        ? HttpStatus.OK
+                        : HttpStatus.BAD_REQUEST)
+                .build();
     }
 }

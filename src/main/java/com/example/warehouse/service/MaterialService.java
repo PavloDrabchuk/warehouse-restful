@@ -1,27 +1,30 @@
 package com.example.warehouse.service;
 
-import com.example.warehouse.dto.MaterialCreateDTO;
-import com.example.warehouse.dto.MaterialDTO;
+import com.example.warehouse.dto.material.MaterialCreateDTO;
+import com.example.warehouse.dto.material.MaterialDTO;
+import com.example.warehouse.dto.warehouse.WarehouseDTO;
 import com.example.warehouse.model.Material;
-import com.example.warehouse.model.Warehouse;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface MaterialService {
 
-    MaterialDTO createMaterial(MaterialCreateDTO materialCreateDTO, Warehouse warehouse);
+    MaterialDTO createMaterial(MaterialCreateDTO materialCreateDTO, WarehouseDTO warehouseDTO);
 
-    List<Material> getAllMaterials();
+    List<MaterialDTO> getAllMaterials();
 
-    List<MaterialDTO> getAllMaterialsByWarehouse(Warehouse warehouse);
+    List<MaterialDTO> getAllMaterialsByWarehouseId(Long warehouseId);
 
-    Optional<Material> getMaterialById(UUID id);
+    MaterialDTO getMaterialById(UUID id);
 
-    int updateMaterialById(UUID id, Material newMaterial);
+    MaterialDTO getMaterialByWarehouseIdAndId(Long warehouseId, UUID id);
+
+    MaterialDTO updateMaterialById(MaterialDTO newMaterialDTO, WarehouseDTO warehouseDTO);
 
     void deleteMaterialById(UUID id);
+
+    boolean deleteMaterialByWarehouseIdAndId(Long warehouseId, UUID id);
 
     void deleteAllMaterials();
 }

@@ -1,21 +1,20 @@
 package com.example.warehouse.service;
 
-import com.example.warehouse.model.Nomenclature;
+import com.example.warehouse.dto.nomenclature.NomenclatureDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface NomenclatureService {
 
-    Nomenclature createNomenclature(Nomenclature nomenclature);
+    NomenclatureDTO createNomenclature(NomenclatureDTO nomenclatureDTO);
 
-    List<Nomenclature> getAllNomenclature();
+    List<NomenclatureDTO> getAllNomenclatures();
 
-    Optional<Nomenclature> getNomenclatureById(Long id);
+    NomenclatureDTO getNomenclatureById(Long id);
 
-    Nomenclature updateNomenclatureById(Long id, Nomenclature newNomenclature);
+    NomenclatureDTO updateNomenclatureById(Long id, NomenclatureDTO nomenclatureDTO);
 
-    void deleteNomenclatureById(Long id);
+    boolean deleteNomenclatureById(Long id);
 
     void deleteAllNomenclatures();
 }

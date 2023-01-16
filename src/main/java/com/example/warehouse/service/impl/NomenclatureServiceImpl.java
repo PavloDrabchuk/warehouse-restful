@@ -1,5 +1,7 @@
 package com.example.warehouse.service.impl;
 
+import com.example.warehouse.dto.nomenclature.NomenclatureDTO;
+import com.example.warehouse.mapper.NomenclatureMapper;
 import com.example.warehouse.model.Nomenclature;
 import com.example.warehouse.repository.NomenclatureRepository;
 import com.example.warehouse.service.NomenclatureService;
@@ -8,48 +10,62 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class NomenclatureServiceImpl implements NomenclatureService {
 
     final private NomenclatureRepository nomenclatureRepository;
+    final private NomenclatureMapper nomenclatureMapper;
 
     @Autowired
-    public NomenclatureServiceImpl(NomenclatureRepository nomenclatureRepository) {
+    public NomenclatureServiceImpl(NomenclatureRepository nomenclatureRepository, NomenclatureMapper nomenclatureMapper) {
         this.nomenclatureRepository = nomenclatureRepository;
+        this.nomenclatureMapper = nomenclatureMapper;
     }
 
     @Override
-    public Nomenclature createNomenclature(Nomenclature nomenclature) {
-        return nomenclatureRepository.save(nomenclature);
+    public NomenclatureDTO createNomenclature(NomenclatureDTO nomenclatureDTO) {
+        return nomenclatureMapper.toNomenclatureDTO(
+                nomenclatureRepository.save(nomenclatureMapper.toNomenclature(nomenclatureDTO)));
+
     }
 
     @Override
-    public List<Nomenclature> getAllNomenclature() {
-        return (List<Nomenclature>) nomenclatureRepository.findAll();
+    public List<NomenclatureDTO> getAllNomenclatures() {
+        return nomenclatureRepository.findAll().stream()
+                .map(nomenclatureMapper::toNomenclatureDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<Nomenclature> getNomenclatureById(Long id) {
-        return nomenclatureRepository.findById(id);
+    public NomenclatureDTO getNomenclatureById(Long id) {
+        return nomenclatureMapper.toNomenclatureDTO(nomenclatureRepository.findById(id).orElse(null));
     }
 
     @Override
-    public Nomenclature updateNomenclatureById(Long id, Nomenclature newNomenclature) {
+    public NomenclatureDTO updateNomenclatureById(Long id, NomenclatureDTO nomenclatureDTO) {
         Optional<Nomenclature> nomenclature = nomenclatureRepository.findById(id);
 
         if (nomenclature.isPresent()) {
-            nomenclature.get().setName(newNomenclature.getName());
+            nomenclatureMapper.updateNomenclatureFromDTO(nomenclatureDTO, nomenclature.get());
 
-            return nomenclatureRepository.save(nomenclature.get());
+            return nomenclatureMapper.toNomenclatureDTO(nomenclatureRepository.save(nomenclature.get()));
         }
-
-        return nomenclatureRepository.save(newNomenclature);
+        return null;
     }
 
     @Override
-    public void deleteNomenclatureById(Long id) {
-        nomenclatureRepository.deleteById(id);
+    public boolean deleteNomenclatureById(Long id) {
+        Optional<Nomenclature> nomenclature = nomenclatureRepository.findById(id);
+
+        if (nomenclature.isPresent()) {
+            nomenclatureRepository.deleteById(id);
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

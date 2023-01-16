@@ -1,8 +1,6 @@
 package com.example.warehouse.model;
 
-
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
 
 import java.util.UUID;
 
@@ -13,7 +11,7 @@ public class Material {
     @Column(name = "id", nullable = false)
     private UUID id;
 
-    @Column(nullable = false, unique = true, length = 40)
+    @Column(nullable = false, length = 40)
     private String name;
 
     @Column(nullable = false)

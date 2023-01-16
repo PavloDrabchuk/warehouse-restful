@@ -1,5 +1,7 @@
 package com.example.warehouse.service.impl;
 
+import com.example.warehouse.dto.warehouse.WarehouseDTO;
+import com.example.warehouse.mapper.WarehouseMapper;
 import com.example.warehouse.model.Warehouse;
 import com.example.warehouse.repository.WarehouseRepository;
 import com.example.warehouse.service.WarehouseService;
@@ -8,47 +10,59 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class WarehouseServiceImpl implements WarehouseService {
 
     private final WarehouseRepository warehouseRepository;
+    private final WarehouseMapper warehouseMapper;
 
     @Autowired
-    public WarehouseServiceImpl(WarehouseRepository warehouseRepository) {
+    public WarehouseServiceImpl(WarehouseRepository warehouseRepository, WarehouseMapper warehouseMapper) {
         this.warehouseRepository = warehouseRepository;
+        this.warehouseMapper = warehouseMapper;
     }
 
     @Override
-    public Warehouse createWarehouse(Warehouse warehouse) {
-        return warehouseRepository.save(warehouse);
+    public WarehouseDTO createWarehouse(WarehouseDTO warehouseDTO) {
+        return warehouseMapper.toWarehouseDTO(warehouseRepository.save(warehouseMapper.toWarehouse(warehouseDTO)));
     }
 
     @Override
-    public List<Warehouse> getAllWarehouses() {
-        return (List<Warehouse>) warehouseRepository.findAll();
+    public List<WarehouseDTO> getAllWarehouses() {
+        return warehouseRepository.findAll().stream()
+                .map(warehouseMapper::toWarehouseDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<Warehouse> getWarehouseById(Long id) {
-        return warehouseRepository.findById(id);
+    public WarehouseDTO getWarehouseById(Long id) {
+        return warehouseMapper.toWarehouseDTO(warehouseRepository.findById(id).orElse(null));
     }
 
     @Override
-    public Warehouse updateWarehouseById(Long id, Warehouse newWarehouse) {
+    public WarehouseDTO updateWarehouseById(Long id, WarehouseDTO warehouseDTO) {
         Optional<Warehouse> warehouse = warehouseRepository.findById(id);
 
         if (warehouse.isPresent()) {
-            warehouse.get().setName(newWarehouse.getName());
+            warehouseMapper.updateWarehouseFromDTO(warehouseDTO, warehouse.get());
 
-            return warehouseRepository.save(warehouse.get());
+            return warehouseMapper.toWarehouseDTO(warehouseRepository.save(warehouse.get()));
         }
-        return warehouseRepository.save(newWarehouse);
+        return null;
     }
 
     @Override
-    public void deleteWarehouseById(Long id) {
-        warehouseRepository.deleteById(id);
+    public boolean deleteWarehouseById(Long id) {
+        Optional<Warehouse> warehouse = warehouseRepository.findById(id);
+
+        if (warehouse.isPresent()) {
+            warehouseRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

@@ -1,12 +1,12 @@
 package com.example.warehouse.mapper;
 
-import com.example.warehouse.dto.MaterialCreateDTO;
-import com.example.warehouse.dto.MaterialDTO;
+import com.example.warehouse.dto.material.MaterialCreateDTO;
+import com.example.warehouse.dto.material.MaterialDTO;
 import com.example.warehouse.model.Material;
-import com.example.warehouse.model.Unit;
 import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring", collectionMappingStrategy = CollectionMappingStrategy.TARGET_IMMUTABLE)
 public interface MaterialMapper {
@@ -21,4 +21,6 @@ public interface MaterialMapper {
     @Mapping(target = "unit.id", source = "unitId")
     @Mapping(target = "nomenclature.id", source = "nomenclatureId")
     Material toMaterial(MaterialCreateDTO materialCreateDTO);
+
+    void updateMaterialFromDto(MaterialDTO materialDTO, @MappingTarget Material material);
 }
