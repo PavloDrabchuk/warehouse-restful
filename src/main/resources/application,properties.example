@@ -1,0 +1,9 @@
+spring.datasource.url=jdbc:postgresql://localhost:5432/warehouse
+spring.datasource.username=<your-database-username>
+spring.datasource.password=<your-database-password>
+
+# drop n create table, good for testing, comment this in production
+spring.jpa.hibernate.ddl-auto=create
+
+spring.jpa.properties.hibernate.format_sql=true
+
