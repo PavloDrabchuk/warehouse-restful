@@ -15,6 +15,4 @@ public interface WarehouseService {
     WarehouseDTO updateWarehouseById(Long id, WarehouseDTO warehouseDTO);
 
     boolean deleteWarehouseById(Long id);
-
-    void deleteAllWarehouses();
 }

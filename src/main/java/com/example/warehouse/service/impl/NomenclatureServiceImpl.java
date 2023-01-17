@@ -67,9 +67,4 @@ public class NomenclatureServiceImpl implements NomenclatureService {
             return false;
         }
     }
-
-    @Override
-    public void deleteAllNomenclatures() {
-        nomenclatureRepository.deleteAll();
-    }
 }
