@@ -15,6 +15,4 @@ public interface NomenclatureService {
     NomenclatureDTO updateNomenclatureById(Long id, NomenclatureDTO nomenclatureDTO);
 
     boolean deleteNomenclatureById(Long id);
-
-    void deleteAllNomenclatures();
 }

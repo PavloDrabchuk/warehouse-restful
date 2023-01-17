@@ -15,6 +15,4 @@ public interface UnitService {
     UnitDTO updateUnitById(Long id, UnitDTO unitDTO);
 
     boolean deleteUnitById(Long id);
-
-    void deleteAllUnits();
 }

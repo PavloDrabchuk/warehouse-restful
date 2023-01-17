@@ -56,7 +56,6 @@ public class MaterialController {
                 .body(materialDTO);
     }
 
-
     @PostMapping(path = "{id}/material")
     public ResponseEntity<MaterialDTO> createMaterial(@PathVariable("id") Long warehouseId,
                                                       @RequestBody MaterialCreateDTO materialCreateDTO) {

@@ -25,6 +25,4 @@ public interface MaterialService {
     void deleteMaterialById(UUID id);
 
     boolean deleteMaterialByWarehouseIdAndId(Long warehouseId, UUID id);
-
-    void deleteAllMaterials();
 }

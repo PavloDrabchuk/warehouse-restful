@@ -65,9 +65,4 @@ public class UnitServiceImpl implements UnitService {
             return false;
         }
     }
-
-    @Override
-    public void deleteAllUnits() {
-        unitRepository.deleteAll();
-    }
 }

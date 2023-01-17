@@ -64,9 +64,4 @@ public class WarehouseServiceImpl implements WarehouseService {
             return false;
         }
     }
-
-    @Override
-    public void deleteAllWarehouses() {
-        warehouseRepository.deleteAll();
-    }
 }
