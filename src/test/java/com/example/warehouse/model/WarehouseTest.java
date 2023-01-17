@@ -22,6 +22,7 @@ public class WarehouseTest {
     @Test
     void testWarehouseDefaultConstructor() {
         List<Material> materials = new ArrayList<>();
+
         materials.add(new Material());
         materials.add(new Material());
 
