@@ -67,7 +67,7 @@ public class NomenclatureControllerTest {
         mockMvc.perform(get("/api/v1/warehouses/nomenclature/{id}", "1"))
                 .andExpect(status().isNotFound());
 
-        verify(nomenclatureService).getNomenclatureById(any(Long.class));
+        verify(nomenclatureService,times(2)).getNomenclatureById(any(Long.class));
     }
 
     @Test

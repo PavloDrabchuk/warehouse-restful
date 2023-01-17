@@ -1,8 +1,13 @@
 package com.example.warehouse.dto.warehouse;
 
+import jakarta.validation.constraints.NotBlank;
+
+
 public class WarehouseDTO {
-    Long id;
-    String name;
+    private  Long id;
+
+    @NotBlank
+    private String name;
 
     public Long getId() {
         return id;
