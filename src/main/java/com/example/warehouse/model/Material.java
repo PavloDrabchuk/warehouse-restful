@@ -40,15 +40,16 @@ public class Material {
     public Material() {
     }
 
-    public Material(String name, Boolean status, Nomenclature nomenclature, Unit unit) {
+    public Material(String name,  Boolean status, Nomenclature nomenclature, Unit unit) {
         this.name = name;
         this.status = status;
         this.nomenclature = nomenclature;
         this.unit = unit;
     }
 
-    public Material(String name, Boolean status, Nomenclature nomenclature, Unit unit, Warehouse warehouse) {
+    public Material(String name, Integer amount, Boolean status, Nomenclature nomenclature, Unit unit, Warehouse warehouse) {
         this.name = name;
+        this.amount=amount;
         this.status = status;
         this.nomenclature = nomenclature;
         this.unit = unit;

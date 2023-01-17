@@ -6,8 +6,6 @@ import com.example.warehouse.dto.warehouse.WarehouseDTO;
 import com.example.warehouse.mapper.MaterialMapper;
 import com.example.warehouse.mapper.WarehouseMapper;
 import com.example.warehouse.model.Material;
-import com.example.warehouse.model.Nomenclature;
-import com.example.warehouse.model.Warehouse;
 import com.example.warehouse.repository.MaterialRepository;
 import com.example.warehouse.service.MaterialService;
 import jakarta.transaction.Transactional;
@@ -37,7 +35,6 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public MaterialDTO createMaterial(MaterialCreateDTO materialCreateDTO) {
         Material material = materialMapper.toMaterial(materialCreateDTO);
-//        material.setWarehouse(warehouseMapper.toWarehouse(warehouseDTO));
 
         return materialMapper.toMaterialDTO(materialRepository.save(material));
     }
@@ -63,7 +60,7 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public MaterialDTO getMaterialByWarehouseIdAndId(Long warehouseId, UUID id) {
-        return materialMapper.toMaterialDTO(materialRepository.findMaterialByIdAndWarehouseId(id,warehouseId).orElse(null));
+        return materialMapper.toMaterialDTO(materialRepository.findMaterialByIdAndWarehouseId(id, warehouseId).orElse(null));
     }
 
 
@@ -73,7 +70,7 @@ public class MaterialServiceImpl implements MaterialService {
 
         if (material.isPresent()) {
             materialMapper.updateMaterialFromDto(newMaterialDTO, material.get());
-           return materialMapper.toMaterialDTO(materialRepository.save(material.get()));
+            return materialMapper.toMaterialDTO(materialRepository.save(material.get()));
         }
         return null;
     }
@@ -85,17 +82,12 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public boolean deleteMaterialByWarehouseIdAndId(Long warehouseId, UUID id) {
-        Optional<Material> material = materialRepository.findMaterialByIdAndWarehouseId(id,warehouseId);
+        Optional<Material> material = materialRepository.findMaterialByIdAndWarehouseId(id, warehouseId);
 
-        if(material.isPresent()){
+        if (material.isPresent()) {
             materialRepository.deleteMaterialByIdAndWarehouseId(id, warehouseId);
             return true;
         }
         return false;
-    }
-
-    @Override
-    public void deleteAllMaterials() {
-        materialRepository.deleteAll();
     }
 }
